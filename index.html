@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>London Time</title>
+
+    <!-- iOS Web App Configuration -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="London Time">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Zen Dots', sans-serif;
+            background: #000000;
+            color: #ff0000;
+            min-height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .date {
+            position: absolute;
+            top: 3vh;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3.5vw;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .clock-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            padding: 0;
+        }
+
+        .time {
+            font-size: 28vw;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            letter-spacing: 0;
+            padding-left: 50px;
+            transform: scaleX(0.9);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 3vh;
+            background: #330000;
+            border-radius: 0;
+            margin-top: 3vh;
+            overflow: hidden;
+            position: relative;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #ff0000;
+            width: 0%;
+            transition: none;
+            will-change: width;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+
+        @media (max-width: 600px) {
+            .time {
+                font-size: 21vw;
+            }
+
+            .date {
+                font-size: 3.5vw;
+            }
+
+            .progress-container {
+                margin-top: 3vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="date" id="date">Loading...</div>
+
+    <div class="clock-container">
+        <div class="time" id="time">--:--</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+    </div>
+
+    <script>
+        const progressBar = document.getElementById('progress');
+        let animationFrameId;
+
+        function updateProgress() {
+            const now = new Date();
+
+            // Get London time components
+            const londonTimeString = now.toLocaleString('en-GB', {
+                timeZone: 'Europe/London',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+
+            // Extract seconds and milliseconds for smooth animation
+            const timeParts = londonTimeString.split(':');
+            const seconds = parseInt(timeParts[2]);
+            const milliseconds = now.getMilliseconds();
+
+            // Calculate precise progress (0-100%)
+            const totalProgress = ((seconds * 1000 + milliseconds) / 60000) * 100;
+            progressBar.style.width = totalProgress + '%';
+
+            // Continue animation
+            animationFrameId = requestAnimationFrame(updateProgress);
+        }
+
+        function updateClock() {
+            const now = new Date();
+
+            // Format time for London (handles BST/GMT automatically)
+            const timeOptions = {
+                timeZone: 'Europe/London',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            };
+
+            const dateOptions = {
+                timeZone: 'Europe/London',
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+
+            // Update the DOM
+            document.getElementById('time').textContent = now.toLocaleTimeString('en-GB', timeOptions);
+            document.getElementById('date').textContent = now.toLocaleDateString('en-GB', dateOptions);
+        }
+
+        // Update clock immediately and then every second
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Start smooth progress bar animation
+        updateProgress();
+    </script>
+</body>
+</html>
