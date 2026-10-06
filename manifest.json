@@ -1,7 +1,7 @@
 {
-  "name": "London Time",
-  "short_name": "London Time",
-  "description": "A clean clock displaying London time with automatic BST/GMT handling",
+  "name": "Clock",
+  "short_name": "Clock",
+  "description": "A clean clock displaying local time with automatic daylight saving time handling",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>London Time</title>
+    <title>Clock</title>
 
     <!-- Cache Control - Force Fresh Updates -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -13,7 +13,7 @@
     <!-- iOS Web App Configuration -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="London Time">
+    <meta name="apple-mobile-web-app-title" content="Clock">
     <meta name="theme-color" content="#000000">
 
     <!-- Web App Manifest -->
@@ -134,9 +134,8 @@
         function updateProgress() {
             const now = new Date();
 
-            // Get London time components
-            const londonTimeString = now.toLocaleString('en-GB', {
-                timeZone: 'Europe/London',
+            // Get local time components
+            const localTimeString = now.toLocaleString('en-GB', {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
@@ -144,7 +143,7 @@
             });
 
             // Extract seconds and milliseconds for smooth animation
-            const timeParts = londonTimeString.split(':');
+            const timeParts = localTimeString.split(':');
             const seconds = parseInt(timeParts[2]);
             const milliseconds = now.getMilliseconds();
 
@@ -159,16 +158,14 @@
         function updateClock() {
             const now = new Date();
 
-            // Format time for London (handles BST/GMT automatically)
+            // Format time for local timezone (handles DST automatically)
             const timeOptions = {
-                timeZone: 'Europe/London',
                 hour: '2-digit',
                 minute: '2-digit',
                 hour12: false
             };
 
             const dateOptions = {
-                timeZone: 'Europe/London',
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
