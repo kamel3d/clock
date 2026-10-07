@@ -19,10 +19,14 @@
     <!-- Web App Manifest -->
     <link rel="manifest" href="manifest.json?v=1.0">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'Monofonto';
+            src: url('monofonto rg.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -36,7 +40,7 @@
         }
 
         body {
-            font-family: 'Space Mono', monospace;
+            font-family: 'Monofonto', monospace;
             background: #000000;
             color: #ff0000;
             min-height: 100vh;
